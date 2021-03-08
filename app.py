@@ -82,12 +82,16 @@ def register():
         #engine.dispose()
         session.close()
         return redirect(url_for('login'))
+     #engine.dispose()
+        session.close()
 
     return render_template("signup.html")
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method=="POST":
+        engine.dispose()
+        session.close()
         email= request.form.get('email')
         password_entered = request.form.get('password')
         user = session.query(User).filter(or_(User.email == email)
