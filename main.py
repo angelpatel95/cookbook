@@ -11,7 +11,7 @@ app.config.from_object(config.Config)
 
 
 
-DB_URI = application.config['SQLALCHEMY_DATABASE_URI']
+DB_URI = app.config['SQLALCHEMY_DATABASE_URI']
 engine = create_engine(DB_URI)
 
 
