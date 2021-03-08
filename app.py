@@ -99,7 +99,7 @@ def login():
         if user is not None and user.password==password_entered:
             user.password=password_entered
             if login_user(DbUser(user)):
-                flash('You are now loged in')
+                flash('You are now logged in')
                 return redirect(url_for('index'))
         flash('Email or password Wrong')
         return redirect(url_for('login'))
