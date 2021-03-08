@@ -6,8 +6,8 @@ from sqlalchemy import create_engine
 
 
 # Initialization
-application = Flask(__name__)
-application.config.from_object(config.Config)
+app = Flask(__name__)
+app.config.from_object(config.Config)
 
 
 
