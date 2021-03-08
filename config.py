@@ -7,7 +7,7 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = os.urandom(32)
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:pinkpurple@127.0.0.1:5432/cookbook'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:pinkpurple@127.0.0.1:5432/cookbook?sslmode=require'
 
 class ProductionConfig(Config):
     DEBUG = False
