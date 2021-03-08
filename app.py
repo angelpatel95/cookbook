@@ -79,6 +79,8 @@ def register():
 
         engine.execute(account.insert(), email=email,
                        fullname=name, password=password_hash)
+        #engine.dispose()
+        session.close()
         return redirect(url_for('login'))
 
     return render_template("signup.html")
