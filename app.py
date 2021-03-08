@@ -74,7 +74,7 @@ def register():
             return redirect(url_for('register'))
         name = request.form.get('name')
         password = request.form.get('password')
-        password_hash = generate_password_hash(password)
+        password_hash = password
         account = Table('users', metadata, autoload=True)
 
         engine.execute(account.insert(), email=email,
@@ -90,7 +90,7 @@ def login():
         password_entered = request.form.get('password')
         user = session.query(User).filter(or_(User.email == email)
                                               ).first()
-        if user is not None and check_password_hash(user.password, password_entered):
+        if user is not None and user.password==password_entered:
             user.password=password_entered
             if login_user(DbUser(user)):
                 flash('You are now loged in')
