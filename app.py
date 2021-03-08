@@ -3,7 +3,7 @@ from userclass import DbUser
 import urllib.request, json
 
 
-from main import application, engine
+from main import app, engine
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import *
 from flask import request, jsonify,render_template,redirect,flash,url_for
@@ -11,14 +11,14 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.orm import Session
 from flask_cors import CORS, cross_origin
 import os
-CORS(application, support_credentials=True)
+CORS(app, support_credentials=True)
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 User=Base.classes.users
 
 login_manager = LoginManager()
 login_manager.login_view = '/login'
-login_manager.init_app(application)
+login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -40,8 +40,8 @@ session = Session(engine)
 metadata = MetaData(engine)
 
 
-@application.route('/index')
-@application.route('/',methods=['POST','GET'])
+@app.route('/index')
+@app.route('/',methods=['POST','GET'])
 @login_required
 def index():
     if request.method=="POST":
@@ -61,7 +61,7 @@ def index():
 
 
 
-@application.route('/register', methods=["GET", "POST"])
+@app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method=="POST":
         email = request.form.get('email')
@@ -83,7 +83,7 @@ def register():
 
     return render_template("signup.html")
 
-@application.route('/login', methods=["GET", "POST"])
+@app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method=="POST":
         email= request.form.get('email')
@@ -100,7 +100,7 @@ def login():
     return render_template("login.html")
 
 
-@application.route('/update', methods=["GET", "POST"])
+@app.route('/update', methods=["GET", "POST"])
 def update():
     session.close()
     email = request.form.get('email')
@@ -117,19 +117,19 @@ def update():
 
 
 @login_required
-@application.route('/profile', methods=["GET", "POST"])
+@app.route('/profile', methods=["GET", "POST"])
 def profile():
     user=current_user.get_user()
     return render_template("profile.html",current_user=user)
 
 
-@application.route('/logout', methods=["GET", "POST"])
+@app.route('/logout', methods=["GET", "POST"])
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
 
-@application.route('/add_book', methods=["GET", "POST"])
+@app.route('/add_book', methods=["GET", "POST"])
 def add_book():
     isbn = request.args.get('isbn')
     book_title = request.args.get('book_title')
@@ -146,20 +146,5 @@ def add_book():
 
 
 
-@application.route('/fetch_books', methods=["GET", "POST"])
-def fetch_books():
-    books = session.query(Books).all()
-    books_list = []
-    for book in books:
-        books_list.append({
-            'isbn': book.isbn,
-            'book_title': book.book_title,
-            'book_author': book.book_author,
-            'publication_year': book.publication_year,
-            'image_url': book.image_url,
-            'price': book.price
-        })
-    return jsonify(books_list)
-
 if __name__=='__main__':
-    application.run()
+    app.run()
