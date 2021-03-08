@@ -3,7 +3,7 @@ from userclass import DbUser
 import urllib.request, json
 
 
-from __init__ import application, engine
+from main import application, engine
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import *
 from flask import request, jsonify,render_template,redirect,flash,url_for
